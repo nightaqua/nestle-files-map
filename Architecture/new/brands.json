@@ -1,0 +1,82 @@
+[
+    {
+      "name": "Nescafé",
+      "category": "Coffee",
+      "description": "Instant coffee brand.",
+      "tagline": "It all starts with a Nescafé.",
+      "region": "Global",
+      "logo_url": "assets/coffee.png"
+    },
+    {
+      "name": "Nespresso",
+      "category": "Coffee",
+      "description": "Premium capsule coffee system.",
+      "tagline": "What else?",
+      "region": "Global",
+      "logo_url": "assets/coffee.png"
+    },
+    {
+      "name": "KitKat",
+      "category": "Sweets",
+      "description": "Chocolate wafer bar.",
+      "tagline": "Have a break, have a KitKat.",
+      "region": "Global",
+      "logo_url": "assets/sweets.png"
+    },
+    {
+      "name": "Purina",
+      "category": "Pet Care",
+      "description": "Pet food and care products.",
+      "tagline": "Your pet, our passion.",
+      "region": "Global",
+      "logo_url": "assets/pet-care.png"
+    },
+    {
+      "name": "Friskies",
+      "category": "Pet Care",
+      "description": "Cat food brand under Purina.",
+      "tagline": "Feed the senses.",
+      "region": "North America",
+      "logo_url": "assets/pet-care.png"
+    },
+    {
+      "name": "Smarties",
+      "category": "Sweets",
+      "description": "Colorful sugar-coated chocolate.",
+      "tagline": "Only Smarties have the answer.",
+      "region": "Europe",
+      "logo_url": "assets/sweets.png"
+    },
+    {
+      "name": "Butterfinger",
+      "category": "Sweets",
+      "description": "Peanut-butter crisp bar.",
+      "tagline": "Nobody better lay a finger...",
+      "region": "North America",
+      "logo_url": "assets/sweets.png"
+    },
+    {
+      "name": "Nestlé Pure Life",
+      "category": "Water",
+      "description": "Bottled water brand.",
+      "tagline": "Pure, safe, and refreshing.",
+      "region": "Global",
+      "logo_url": "assets/water.png"
+    },
+    {
+      "name": "Blue Bottle Coffee",
+      "category": "Coffee",
+      "description": "Specialty coffee roaster.",
+      "tagline": "Coffee is not a commodity.",
+      "region": "US & Asia",
+      "logo_url": "assets/coffee.png"
+    },
+    {
+      "name": "Milo",
+      "category": "Beverages",
+      "description": "Chocolate malt beverage.",
+      "tagline": "Energy to go further.",
+      "region": "Asia-Pacific",
+      "logo_url": "assets/beverages.png"
+    }
+  ]
