@@ -26,6 +26,8 @@
         height: 100vh; /* Full viewport height */
         width: 100vw; /* Full viewport width */
         overflow: hidden; /* Prevent scrollbars on body/html */
+        -webkit-transform: translate3d(0, 0, 0); /* Fix hover lag in Safari/Chrome */
+        transform: translateZ(0); /* Forces GPU acceleration, fixes rendering */
     }
     #main-content {
         height: 100%;
@@ -59,6 +61,13 @@
         /* position: relative; /* Or ensure it's not hidden by other elements */
         /* z-index: 10; */
     }
+    svg {
+    pointer-events: all !important;
+  }
+
+  .tooltip {
+    pointer-events: none; /* If you're using custom tooltips */
+  }
     </style>
 </head>
 <body>
