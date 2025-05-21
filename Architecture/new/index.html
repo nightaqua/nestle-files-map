@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nestlé Brand Map</title>
+    <title>Nestlé Brand Map Widget</title>
     <link rel="stylesheet" href="styles.css">
     <!-- D3.js Library -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -19,6 +19,46 @@
         border-radius: 50%;
         vertical-align: middle;
     }
+    /* Styles for widget mode */
+    body, html {
+        margin: 0;
+        padding: 0;
+        height: 100vh; /* Full viewport height */
+        width: 100vw; /* Full viewport width */
+        overflow: hidden; /* Prevent scrollbars on body/html */
+    }
+    #main-content {
+        height: 100%;
+        width: 100%;
+        position: relative; /* For absolute positioning of theme-toggle */
+        display: flex; 
+        flex-direction: column;
+    }
+    #radial-view {
+        flex-grow: 1; 
+        display: flex;
+        flex-direction: column; 
+        padding: 0 !important; /* Override existing padding */
+        height: 100%; 
+    }
+    #radial-diagram {
+        flex-grow: 1; 
+        width: 100%; 
+        height: 100% !important; /* Ensure it fills available flex space */
+        /* Ensure existing background/border from styles.css are suitable or override if needed */
+    }
+    .theme-toggle {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        z-index: 1000; 
+    }
+    /* Ensure radial controls are visible and usable, adjust if needed */
+    .radial-controls {
+        /* margin: 10px auto; /* Default margin from styles.css might be fine */
+        /* position: relative; /* Or ensure it's not hidden by other elements */
+        /* z-index: 10; */
+    }
     </style>
 </head>
 <body>
@@ -27,47 +67,18 @@
         <div class="spinner"></div>
         <p>Loading Nestlé Brand Map...</p>
     </div>
-    
+
     <!-- Main Content -->
     <div id="main-content" class="hidden">
-        <header>
-            <h1>Nestlé Brand Map</h1>
-            <p>Explore Nestlé's global brand ecosystem</p>
-            
-            <!-- Theme Toggle -->
-            <div class="theme-toggle">
-                <button id="theme-toggle-btn" aria-label="Toggle dark/light mode">
-                    <i class="fas fa-sun light-icon"></i>
-                    <i class="fas fa-moon dark-icon"></i>
-                </button>
-            </div>
-        </header>
-        
-        <!-- View Toggle -->
-        <div class="view-toggle">
-            <button id="radial-view-btn" class="active">Radial View</button>
-            <button id="list-view-btn">List View</button>
+        <!-- Theme Toggle -->
+        <div class="theme-toggle">
+            <button id="theme-toggle-btn" aria-label="Toggle dark/light mode">
+                <i class="fas fa-sun light-icon"></i>
+                <i class="fas fa-moon dark-icon"></i>
+            </button>
         </div>
-        
-        <!-- Filter Controls -->
-        <div class="filter-controls">
-            <div class="search-container">
-                <input type="text" id="search-input" placeholder="Search brands...">
-                <i class="fas fa-search search-icon"></i>
-            </div>
-            <div class="region-filter-container">
-                <select id="region-filter">
-                    <option value="all">All Regions</option>
-                    <option value="Global">Global</option>
-                    <option value="North America">North America</option>
-                    <option value="Europe">Europe</option>
-                    <option value="Asia-Pacific">Asia-Pacific</option>
-                    <option value="US & Asia">US & Asia</option>
-                </select>
-            </div>
-        </div>
-        
-        <!-- Radial View -->
+
+        <!-- Radial View (now the primary content) -->
         <div id="radial-view" aria-label="Radial Brand Map" tabindex="0">
             <div id="radial-diagram" role="region" aria-label="Radial diagram of brands"></div>
             <div class="radial-controls" role="toolbar" aria-label="Radial view controls">
@@ -78,15 +89,8 @@
                 <button id="rotate-right" title="Rotate Right" aria-label="Rotate Right"><i class="fas fa-redo"></i></button>
             </div>
         </div>
-        
-        <!-- List View -->
-        <div id="list-view" class="hidden">
-            <div id="category-view">
-                <!-- Categories will be dynamically inserted here -->
-            </div>
-        </div>
-        
-        <!-- Brand Detail Modal -->
+
+        <!-- Brand Detail Modal (kept for functionality) -->
         <div id="brand-modal" class="modal hidden">
             <div class="modal-content">
                 <span class="close-button">&times;</span>
@@ -95,13 +99,8 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Footer -->
-        <footer>
-            <p>© 2025 Nestlé Brand Map Visualization</p>
-        </footer>
     </div>
-    
+
     <script src="scripts.js"></script>
 </body>
 </html>

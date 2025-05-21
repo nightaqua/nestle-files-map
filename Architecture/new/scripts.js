@@ -110,6 +110,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (document.documentElement.hasAttribute('data-contrast')) {
         document.documentElement.removeAttribute('data-contrast');
     }
+
+        if (helpBtn) { // Check if helpBtn was successfully created and added
+        helpBtn.addEventListener('click', () => {
+            const modal = document.getElementById('help-modal');
+            if (modal) modal.classList.add('show');
+        });
+    }
+
 });
 
 /**
