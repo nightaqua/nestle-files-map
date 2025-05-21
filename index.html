@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nestlé Brand Map Widget</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- D3.js Library -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23eee'/%3E%3Ctext x='16' y='22' font-size='18' text-anchor='middle' fill='%23999'%3E%3F%3C/text%3E%3C/svg%3E">
+    <style>
+    .svg-placeholder {
+        display: inline-block;
+        width: 32px;
+        height: 32px;
+        background: #eee url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><rect width="32" height="32" fill="%23eee"/><text x="16" y="20" font-size="14" text-anchor="middle" fill="%23999">?</text></svg>') center/cover no-repeat;
+        border-radius: 50%;
+        vertical-align: middle;
+    }
+    /* Styles for widget mode */
+    body, html {
+        margin: 0;
+        padding: 0;
+        height: 100vh; /* Full viewport height */
+        width: 100vw; /* Full viewport width */
+        overflow: hidden; /* Prevent scrollbars on body/html */
+    }
+    #main-content {
+        height: 100%;
+        width: 100%;
+        position: relative; /* For absolute positioning of theme-toggle */
+        display: flex; 
+        flex-direction: column;
+    }
+    #radial-view {
+        flex-grow: 1; 
+        display: flex;
+        flex-direction: column; 
+        padding: 0 !important; /* Override existing padding */
+        height: 100%; 
+    }
+    #radial-diagram {
+        flex-grow: 1; 
+        width: 100%; 
+        height: 100% !important; /* Ensure it fills available flex space */
+        /* Ensure existing background/border from styles.css are suitable or override if needed */
+    }
+    .theme-toggle {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        z-index: 1000; 
+    }
+    /* Ensure radial controls are visible and usable, adjust if needed */
+    .radial-controls {
+        /* margin: 10px auto; /* Default margin from styles.css might be fine */
+        /* position: relative; /* Or ensure it's not hidden by other elements */
+        /* z-index: 10; */
+    }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" role="status" aria-live="polite">
+        <div class="spinner"></div>
+        <p>Loading Nestlé Brand Map...</p>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content" class="hidden">
+        <!-- Theme Toggle -->
+        <div class="theme-toggle">
+            <button id="theme-toggle-btn" aria-label="Toggle dark/light mode">
+                <i class="fas fa-sun light-icon"></i>
+                <i class="fas fa-moon dark-icon"></i>
+            </button>
+        </div>
+
+        <!-- Radial View (now the primary content) -->
+        <div id="radial-view" aria-label="Radial Brand Map" tabindex="0">
+            <div id="radial-diagram" role="region" aria-label="Radial diagram of brands"></div>
+            <div class="radial-controls" role="toolbar" aria-label="Radial view controls">
+                <button id="zoom-in" title="Zoom In" aria-label="Zoom In"><i class="fas fa-plus"></i></button>
+                <button id="zoom-out" title="Zoom Out" aria-label="Zoom Out"><i class="fas fa-minus"></i></button>
+                <button id="reset-zoom" title="Reset View" aria-label="Reset View"><i class="fas fa-home"></i></button>
+                <button id="rotate-left" title="Rotate Left" aria-label="Rotate Left"><i class="fas fa-undo"></i></button>
+                <button id="rotate-right" title="Rotate Right" aria-label="Rotate Right"><i class="fas fa-redo"></i></button>
+            </div>
+        </div>
+
+        <!-- Brand Detail Modal (kept for functionality) -->
+        <div id="brand-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <div id="brand-detail-content">
+                    <!-- Brand details will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

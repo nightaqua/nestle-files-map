@@ -1,0 +1,200 @@
+[
+    {
+      "name": "Nescafé",
+      "category": "Coffee",
+      "description": "Instant coffee brand.",
+      "tagline": "It all starts with a Nescafé.",
+      "region": "Global",
+      "logo_url": "assets/nescafe.png"
+    },
+    {
+      "name": "Nespresso",
+      "category": "Coffee",
+      "description": "Premium capsule coffee system.",
+      "tagline": "What else?",
+      "region": "Global",
+      "logo_url": "assets/nespresso.png"
+    },
+    {
+      "name": "KitKat",
+      "category": "Sweets",
+      "description": "Chocolate wafer bar.",
+      "tagline": "Have a break, have a KitKat.",
+      "region": "Global",
+      "logo_url": "assets/kitkat.png"
+    },
+    {
+      "name": "Purina",
+      "category": "Pet_Care",
+      "description": "Pet food and care products.",
+      "tagline": "Your pet, our passion.",
+      "region": "Global",
+      "logo_url": "assets/purina.png"
+    },
+    {
+      "name": "Friskies",
+      "category": "Pet_Care",
+      "description": "Cat food brand under Purina.",
+      "tagline": "Feed the senses.",
+      "region": "North America",
+      "logo_url": "assets/friskies.png"
+    },
+    {
+      "name": "Smarties",
+      "category": "Sweets",
+      "description": "Colorful sugar-coated chocolate.",
+      "tagline": "Only Smarties have the answer.",
+      "region": "Europe",
+      "logo_url": "assets/smarties.png"
+    },
+    {
+      "name": "Butterfinger",
+      "category": "Sweets",
+      "description": "Peanut-butter crisp bar.",
+      "tagline": "Nobody better lay a finger...",
+      "region": "North America",
+      "logo_url": "assets/butterfinger.png"
+    },
+    {
+      "name": "Nestlé Pure Life",
+      "category": "Water",
+      "description": "Bottled water brand.",
+      "tagline": "Pure, safe, and refreshing.",
+      "region": "Global",
+      "logo_url": "assets/purelife.png"
+    },
+    {
+      "name": "Blue Bottle Coffee",
+      "category": "Coffee",
+      "description": "Specialty coffee roaster.",
+      "tagline": "Coffee is not a commodity.",
+      "region": "US & Asia",
+      "logo_url": "assets/bluebottle.png"
+    },
+    {
+      "name": "Milo",
+      "category": "Beverages",
+      "description": "Chocolate malt beverage.",
+      "tagline": "Energy to go further.",
+      "region": "Asia-Pacific",
+      "logo_url": "assets/milo.png"
+    },
+  {
+    "name": "The Body Shop",
+    "parent_brand": "L'Oréal",
+    "category": "Cosmetics",
+    "description": "Ethically sourced, naturally inspired beauty products.",
+    "tagline": "Enrich Not Exploit.",
+    "region": "Global",
+    "logo_url": "assets/bodyshop.png"
+  },
+  {
+    "name": "Cheerios",
+    "category": "Cereal",
+    "description": "Toasted oat cereal (Nestlé version).",
+    "tagline": "The one and only Cheerios.",
+    "region": "International",
+    "logo_url": "assets/cheerios.png"
+  },
+  {
+    "name": "Diesel Fragrances",
+    "parent_brand": "L'Oréal",
+    "category": "Fashion",
+    "description": "Licensed fragrances under the Diesel brand.",
+    "tagline": "Only The Brave.",
+    "region": "Global",
+    "logo_url": "assets/diesel.png"
+  },
+  {
+    "name": "Felix",
+    "category": "Pet_Care",
+    "description": "Cat food known for its mischievous black and white cat.",
+    "tagline": "Clever cat, clever choice.",
+    "region": "Europe",
+    "logo_url": "assets/felix.png"
+  },
+  {
+    "name": "Garnier",
+    "parent_brand": "L'Oréal",
+    "category": "Cosmetics",
+    "description": "Mass-market cosmetics and haircare brand.",
+    "tagline": "By Garnier, Naturally.",
+    "region": "Global",
+    "logo_url": "assets/garnier.png"
+  },
+  {
+    "name": "L'Oréal",
+    "category": "Parent Company",
+    "description": "Leading global beauty and cosmetics company. Nestlé owns a significant stake (approx. 20%).",
+    "tagline": "Because You're Worth It.",
+    "region": "Global",
+    "logo_url": "assets/loreal.png"
+  },
+  {
+    "name": "Milkybar",
+    "category": "Sweets",
+    "description": "White chocolate brand.",
+    "tagline": "The creamy, milky taste.",
+    "region": "Global",
+    "logo_url": "assets/milkybar.png"
+  },
+  {
+    "name": "Nerds",
+    "category": "Sweets",
+    "description": "Tiny, tangy, crunchy candy.",
+    "tagline": "Tiny, Tangy, Crunchy Candy.",
+    "region": "North America",
+    "logo_url": "assets/nerds.png"
+  },
+  {
+    "name": "Nestlé Ice Cream",
+    "category": "Icecream",
+    "description": "Various ice cream products under the Nestlé brand.",
+    "tagline": "Good Food, Good Life.",
+    "region": "Global",
+    "logo_url": "assets/nestleice.png"
+  },
+  {
+    "name": "Ralph Lauren Fragrances",
+    "parent_brand": "L'Oréal",
+    "category": "Fashion",
+    "description": "Licensed fragrances under the Ralph Lauren brand.",
+    "tagline": "Timeless style.",
+    "region": "Global",
+    "logo_url": "assets/ralphlauren.png"
+  },
+  {
+    "name": "S.Pellegrino",
+    "category": "Water",
+    "description": "Italian natural mineral water.",
+    "tagline": "Live in Italian.",
+    "region": "Global",
+    "logo_url": "assets/spg.png"
+  },
+  {
+    "name": "Vichy",
+    "parent_brand": "L'Oréal",
+    "category": "Cosmetics",
+    "description": "Dermo-cosmetic skincare brand.",
+    "tagline": "Health is beautiful.",
+    "region": "Global",
+    "logo_url": "assets/vichy.png"
+  },
+  {
+    "name": "Vittel",
+    "category": "Water",
+    "description": "Natural mineral water from France.",
+    "tagline": "The source of vitality.",
+    "region": "Global",
+    "logo_url": "assets/vittel.png"
+  },
+  {
+    "name": "YSL Beauté",
+    "parent_brand": "L'Oréal",
+    "category": "Cosmetics",
+    "description": "Luxury cosmetics and fragrances by Yves Saint Laurent.",
+    "tagline": "Dress your face.",
+    "region": "Global",
+    "logo_url": "assets/ysl.png"
+  }
+]
