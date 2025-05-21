@@ -102,5 +102,22 @@
     </div>
 
     <script src="scripts.js"></script>
+    <script>
+        function sendHeight() {
+          const height = document.body.scrollHeight;
+          parent.postMessage({ type: 'resize-map-iframe', height }, '*');
+        }
+      
+        window.addEventListener('load', sendHeight);
+        window.addEventListener('resize', sendHeight);
+      
+        // Optional: call it periodically in case content shifts (e.g. icons load late)
+        let attempts = 0;
+        const interval = setInterval(() => {
+          sendHeight();
+          if (++attempts > 10) clearInterval(interval);
+        }, 500);
+      </script>
+      
 </body>
 </html>
