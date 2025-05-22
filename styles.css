@@ -332,6 +332,7 @@ html[data-theme='light'] .dark-icon {
     justify-content: center;
     width: 100%;
     min-width: 0;
+    position: relative;
 }
 
 #radial-legend {
@@ -343,6 +344,15 @@ html[data-theme='light'] .dark-icon {
     gap: 0;
     min-height: 100px;
     padding-left: 0;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.85);
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    border-radius: 8px;
+    padding: 12px 10px;
 }
 
 #radial-svg-wrap {
@@ -351,6 +361,8 @@ html[data-theme='light'] .dark-icon {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    z-index: 1;
 }
 
 #radial-svg-wrap svg {
@@ -363,10 +375,10 @@ html[data-theme='light'] .dark-icon {
 }
 
 .radial-controls {
+    margin-top: 20px;
     display: flex;
     justify-content: center;
-    gap: 15px;
-    margin: 20px auto;
+    gap: 10px;
 }
 
 .radial-controls button {
@@ -417,6 +429,57 @@ html[data-theme='light'] .dark-icon {
     transition: stroke 0.3s;
 }
 
+/* Category-specific colors */
+.node.category-coffee .category-bg-circle {
+    fill: #8D6E63; /* Brown */
+    stroke: #8D6E63;
+}
+
+.node.category-sweets .category-bg-circle {
+    fill: #EC407A; /* Pink */
+    stroke: #EC407A;
+}
+
+.node.category-pet-care .category-bg-circle {
+    fill: #66BB6A; /* Green */
+    stroke: #66BB6A;
+}
+
+.node.category-water .category-bg-circle {
+    fill: #29B6F6; /* Light Blue */
+    stroke: #29B6F6;
+}
+
+.node.category-beverages .category-bg-circle {
+    fill: #FFA726; /* Orange */
+    stroke: #FFA726;
+}
+
+.node.category-cereals .category-bg-circle {
+    fill: #9C27B0; /* Purple */
+    stroke: #9C27B0;
+}
+
+.node.category-ice-cream .category-bg-circle {
+    fill: #FFCDD2; /* Light Pink */
+    stroke: #FFCDD2;
+}
+
+.node.category-cosmetics .category-bg-circle {
+    fill: #FF8A65; /* Light Orange */
+    stroke: #FF8A65;
+}
+
+.node.category-fragrances .category-bg-circle {
+    fill: #BA68C8; /* Purple */
+    stroke: #BA68C8;
+}
+
+.node.category-skincare .category-bg-circle {
+    fill: #4DD0E1; /* Teal */
+    stroke: #4DD0E1;
+}
+
 .node.root-node circle {
     fill: var(--nestle-red);
     stroke: var(--nestle-red);
@@ -436,32 +499,12 @@ html[data-theme='light'] .dark-icon {
 .node.brand-node:hover circle {
     fill: var(--nestle-light-blue);
     stroke-width: 3px;
-    r: 18; /* Increase radius on hover */
+    transform: scale(1.2); /* Increase radius on hover */
 }
 
 .node.brand-node.filtered circle {
     fill: rgba(226, 0, 26, 0.2);
     stroke: var(--nestle-red);
-}
-
-.node.coffee circle {
-    fill: #8D6E63; /* Brown */
-}
-
-.node.sweets circle {
-    fill: #EC407A; /* Pink */
-}
-
-.node.pet-care circle {
-    fill: #66BB6A; /* Green */
-}
-
-.node.water circle {
-    fill: #29B6F6; /* Light Blue */
-}
-
-.node.beverages circle {
-    fill: #FFA726; /* Orange */
 }
 
 .node.brand-node.highlight circle {
@@ -475,35 +518,37 @@ html[data-theme='light'] .dark-icon {
 .modal {
     display: none;
     position: fixed;
-    z-index: 1;
+    z-index: 1001;
     left: 0;
     top: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     background-color: rgba(0, 0, 0, 0.7);
     overflow: auto;
+    transition: opacity 0.3s;
 }
 
 .modal.show {
     display: block;
+    animation: modalFadeIn 0.3s;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .modal-content {
     background-color: var(--card-bg);
     margin: 10% auto;
-    padding: 20px;
+    padding: 24px 32px;
     border: 1px solid var(--border-color);
-    width: 80%;
-    max-width: 600px;
-    border-radius: 8px;
+    width: 90%;
+    max-width: 420px;
+    border-radius: 12px;
     position: relative;
-    box-shadow: 0 5px 25px var(--shadow-color);
+    box-shadow: 0 8px 32px var(--shadow-color);
     animation: modalFadeIn 0.3s;
-}
-
-@keyframes modalFadeIn {
-    from { opacity: 0; transform: translateY(-30px); }
-    to { opacity: 1; transform: translateY(0); }
 }
 
 .close-button {
@@ -559,6 +604,11 @@ html[data-theme='light'] .dark-icon {
     color: var(--nestle-blue);
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 5px;
+}
+
+.modal-content:hover {
+    box-shadow: 0 12px 40px var(--nestle-blue), 0 8px 32px var(--shadow-color);
+    border-color: var(--nestle-blue);
 }
 
 /* No Results Message */
@@ -725,4 +775,23 @@ footer {
     flex: unset;
     font-weight: 700;
     width: 100%;
+}
+
+#help-btn {
+    background: none;
+    border: none;
+    color: var(--nestle-blue);
+    font-size: 28px;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 50%;
+    transition: background 0.2s, color 0.2s;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+#help-btn:hover, #help-btn:focus {
+    background: var(--nestle-light-blue);
+    color: var(--nestle-red);
+    outline: none;
 }

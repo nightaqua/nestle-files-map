@@ -19,26 +19,26 @@ let lastGestureRotation = 0; // For touch rotation gestures
 // Define radii for different node types - accessible globally or passed around
 // Made globally accessible for use in updateRadialRotation and event handlers
 const radii = {
-    root: 35,
-    loreal_parent: 28,
-    category_bg: 22, // Background circle for category SVG
-    brand: 18
+    root: 42,
+    loreal_parent: 33.6,
+    category_bg: 26.4, // Background circle for category SVG
+    brand: 21.6
 };
-const categoryIconSize = 30; // Display size for category SVG icons
+const categoryIconSize = 36; // Display size for category SVG icons
 
 // Define colors for categories (should match CSS or be consistent)
 // Ensure these match the colors used in styles.css or are generated consistently
 const colorMap = {
     'Coffee': '#8D6E63', // Brown
     'Sweets': '#EC407A', // Pink
-    'Pet_Care': '#66BB6A', // Green
+    'Pet Care': '#66BB6A', // Green
     'Water': '#29B6F6', // Light Blue
     'Beverages': '#FFA726', // Orange
-    'Cereal': '#9C27B0', // Purple
-    'Icecream': '#FFCDD2', // Light Pink
+    'Cereals': '#9C27B0', // Purple
+    'Ice Cream': '#FFCDD2', // Light Pink
     'Cosmetics': '#FF8A65', // Light Orange
-    'Fashion': '#BA68C8' // Different purple
-    // Add colors for other categories if needed
+    'Fragrances': '#BA68C8', // Purple for Fragrances
+    'Skincare': '#4DD0E1' // Teal for Skincare
 };
 
 // Initialize the application when DOM is loaded
@@ -81,16 +81,18 @@ document.addEventListener("DOMContentLoaded", () => {
             <span class="close-button">&times;</span>
             <h2>How to Use the Brand Map</h2>
             <ul style="text-align:left;line-height:1.7;">
-                <li><b>Switch Views:</b> Use the buttons above the map to toggle between Radial and List views.</li>
                 <li><b>Zoom & Rotate:</b> Use the controls below the map, or pinch/rotate on touch devices.</li>
-                <li><b>Search & Filter:</b> Use the search box and region filter to find brands.</li>
                 <li><b>Tooltips:</b> Hover or tap a node to see details. Click to pin/unpin.</li>
-                <li><b>Legend:</b> (Note: Legend functionality may be limited with icon-based nodes)</li>
                  <li><b>Theme Toggle:</b> Use the sun/moon icon in the header.</li>
             </ul>
         </div>
     `;
      document.body.appendChild(helpModal);
+
+    // Show help modal on help button click
+    helpBtn.addEventListener('click', () => {
+        helpModal.classList.add('show');
+    });
 
     const helpModalCloseButton = helpModal.querySelector('.close-button');
      if (helpModalCloseButton) { // Check if the element exists
@@ -110,14 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (document.documentElement.hasAttribute('data-contrast')) {
         document.documentElement.removeAttribute('data-contrast');
     }
-
-        if (helpBtn) { // Check if helpBtn was successfully created and added
-        helpBtn.addEventListener('click', () => {
-            const modal = document.getElementById('help-modal');
-            if (modal) modal.classList.add('show');
-        });
-    }
-
 });
 
 /**
@@ -291,7 +285,7 @@ function setupEventListeners() {
             d3.selectAll('.node .main-display-circle, .node .category-icon').style('filter', null); // Target main circle and category icon
              d3.selectAll('.node .main-display-circle').each(function(d) {
                  // Revert circle radius based on node type
-                 let originalRadius = 10; // Fallback
+                 let originalRadius = 12; // Fallback
                  if (d && d.data) { // Check if data is bound
                     if (d.data.nodeType === 'root') originalRadius = radii.root;
                     else if (d.data.nodeType === 'loreal_parent') originalRadius = radii.loreal_parent;
@@ -668,10 +662,10 @@ function prepareRadialData() {
         };
 
         const lorealSubCategories = {
-            Fashion: {
-                name: "Fashion",
+            Fragrances: {
+                name: "Fragrances",
                 nodeType: 'category',
-                iconUrl: 'assets/fashion.svg',
+                iconUrl: 'assets/perfume.svg', // Use SVG for category icon
                 isLorealCategory: true,
                 children: []
             },
@@ -681,27 +675,39 @@ function prepareRadialData() {
                 iconUrl: 'assets/cosmetics.svg',
                 isLorealCategory: true,
                 children: []
+            },
+            Skincare: {
+                name: "Skincare",
+                nodeType: 'category',
+                iconUrl: 'assets/skincare.svg', // Use SVG for category icon
+                isLorealCategory: true,
+                children: []
             }
         };
 
         lorealBrands.forEach(brand => {
-             brand.nodeType = 'brand'; // Ensure nodeType is set for brands
-            if (brand.category === "Fashion" && lorealSubCategories.Fashion) {
-                lorealSubCategories.Fashion.children.push(brand);
+             brand.nodeType = 'brand';
+            if (brand.category === "Fragrances" && lorealSubCategories.Fragrances) {
+                lorealSubCategories.Fragrances.children.push(brand);
             } else if (brand.category === "Cosmetics" && lorealSubCategories.Cosmetics) {
                 lorealSubCategories.Cosmetics.children.push(brand);
+            } else if (brand.category === "Skincare" && lorealSubCategories.Skincare) {
+                lorealSubCategories.Skincare.children.push(brand);
             } else {
-                 console.warn(`L'Oréal brand "${brand.name}" has unexpected category: ${brand.category}`);
+                 console.warn(`L'Oréal brand \"${brand.name}\" has unexpected category: ${brand.category}`);
                  // Optional: Add to a default L'Oréal sub-category or directly under L'Oréal parent
             }
         });
 
         // Add populated sub-categories to L'Oréal parent
-        if (lorealSubCategories.Fashion.children.length > 0) {
-            lorealParentNode.children.push(lorealSubCategories.Fashion);
+        if (lorealSubCategories.Fragrances.children.length > 0) {
+            lorealParentNode.children.push(lorealSubCategories.Fragrances);
         }
         if (lorealSubCategories.Cosmetics.children.length > 0) {
             lorealParentNode.children.push(lorealSubCategories.Cosmetics);
+        }
+        if (lorealSubCategories.Skincare.children.length > 0) {
+            lorealParentNode.children.push(lorealSubCategories.Skincare);
         }
 
         // Add L'Oréal parent node to the root only if it has children (sub-categories with brands)
@@ -723,19 +729,22 @@ function prepareRadialData() {
         const categoryName = brand.category || 'Uncategorized'; // Handle potential missing category
 
         if (!directNestleCategories[categoryName]) {
-            // Normalize category name for SVG filename
             let svgFileName = categoryName.toLowerCase().replace(/[^a-z0-9]+/g, '_');
-             // Correct specific names if needed (e.g., "pet_care")
-             if (categoryName === "Pet_Care") svgFileName = "pet_care";
-             if (categoryName === "Icecream") svgFileName = "icecream";
-             if (categoryName === "Cereal") svgFileName = "cereal";
-             if (categoryName === "Beauty & Personal Care") svgFileName = "cosmetics"; // Map old category to a new SVG
-
-
+            // Map category names to their SVG filenames
+            if (categoryName === "Pet Care") svgFileName = "pet_care";
+            if (categoryName === "Ice Cream") svgFileName = "icecream";
+            if (categoryName === "Cereals") svgFileName = "cereals";
+            if (categoryName === "Fragrances") svgFileName = "fragrances";
+            if (categoryName === "Skincare") svgFileName = "skincare";
+            if (categoryName === "Beverages") svgFileName = "beverages";
+            if (categoryName === "Coffee") svgFileName = "coffee";
+            if (categoryName === "Sweets") svgFileName = "sweets";
+            if (categoryName === "Water") svgFileName = "water";
+            if (categoryName === "Cosmetics") svgFileName = "cosmetics";
             directNestleCategories[categoryName] = {
                 name: categoryName,
                 nodeType: 'category',
-                iconUrl: `assets/${svgFileName}.svg`, // Path to category SVG icon
+                iconUrl: `assets/${svgFileName}.svg`, // Use SVG for category icons
                 children: []
             };
         }
@@ -794,23 +803,13 @@ function initializeRadialView() {
         flexWrap.html(''); // Clear existing content of flexWrap
     }
 
-     // Append legend and svg-wrap containers within flexWrap
+     // Append svg-wrap containers within flexWrap
      flexWrap.style('display', 'flex') // Ensure flex properties are applied
              .style('flex-direction', 'row')
              .style('align-items', 'center')
              .style('justify-content', 'center');
 
-     flexWrap.append('div') // Legend container
-        .attr('id', 'radial-legend')
-        .style('display', 'flex')
-        .style('flex-direction', 'column')
-        .style('align-items', 'flex-end')
-        .style('gap', '18px')
-        .style('margin-right', '24px')
-        .style('min-width', '120px');
-
-
-    const svgWrap = flexWrap.append('div') // SVG container
+     const svgWrap = flexWrap.append('div') // SVG container
         .attr('id', 'radial-svg-wrap')
         .style('flex', '1')
         .style('display', 'flex')
@@ -826,7 +825,7 @@ function initializeRadialView() {
     const height = Math.max(400, wrapRect.height || 600);
 
     // Adjusted radius calculation
-    const baseRadius = Math.min(width, height) / 2 - 40; // Increased margin for text if needed later, or larger icons
+    const baseRadius = Math.min(width, height) / 2 - 48; // Increased margin for text if needed, or larger icons (was 40)
 
     radialSvg = d3.select(svgWrap.node())
         .append('svg')
@@ -948,6 +947,17 @@ function initializeRadialView() {
                     .attr('height', categoryIconSize)
                     .attr('preserveAspectRatio', 'xMidYMid meet'); // Maintain aspect ratio
             }
+
+            // Add category name as a label to the right of the node
+            nodeElement.append('text')
+                .attr('x', radii.category_bg * 1.2)
+                .attr('y', 6) // Vertically center with icon
+                .attr('text-anchor', 'start')
+                .attr('alignment-baseline', 'middle')
+                .attr('font-size', '1.1em')
+                .attr('font-weight', 'bold')
+                .attr('fill', colorMap[nodeData.name] || '#888')
+                .text((nodeData.name || '').replace(/_/g, ' '));
         } else if (nodeType === 'brand' || nodeType === 'root' || nodeType === 'loreal_parent') {
             // These node types use circles filled with patterns (logos)
             imageUrl = nodeType === 'brand' ? nodeData.logo_url : nodeData.iconUrl; // Use logo_url for brand, iconUrl for root/loreal
@@ -1025,17 +1035,40 @@ function initializeRadialView() {
         } else { // Fallback for any other unknown node types
              nodeElement.append('circle')
                 .attr('class', 'main-display-circle')
-                .attr('r', 10) // Smaller default radius
+                .attr('r', 12) // Smaller default radius (was 10)
                 .style('fill', 'var(--secondary-text)'); // Neutral color
         }
+
+        if (nodeType === 'loreal_parent') {
+            // Draw a 20% arc around the node
+            const arc = d3.arc()
+                .innerRadius(currentRadius + 4)
+                .outerRadius(currentRadius + 10)
+                .startAngle(0)
+                .endAngle(2 * Math.PI * 0.2); // 20% of the circle
+
+            nodeElement.append('path')
+                .attr('d', arc())
+                .attr('fill', '#0073B2') // Nestlé blue
+                .attr('opacity', 0.7);
+
+            // Calculate the position for the '20%' label at the end of the arc
+            const arcAngle = 2 * Math.PI * 0.2; // End angle in radians
+            const labelRadius = currentRadius + 18; // Slightly outside the arc
+            const labelX = labelRadius * Math.cos(arcAngle - Math.PI / 2);
+            const labelY = labelRadius * Math.sin(arcAngle - Math.PI / 2);
+
+            nodeElement.append('text')
+                .attr('x', labelX)
+                .attr('y', labelY)
+                .attr('text-anchor', 'start')
+                .attr('alignment-baseline', 'middle')
+                .attr('font-size', '0.9em')
+                .attr('fill', '#0073B2')
+                .attr('font-weight', 'bold')
+                .text('20%');
+        }
     });
-
-    // REMOVED: Code that appended text labels
-
-    // Add/Update the legend (modify addRadialLegend to handle new categories/structure if needed)
-    // For now, let's keep the existing addRadialLegend which uses text labels and colors.
-    // It might need updates to accurately reflect the new hierarchy or use category SVGs in the legend.
-    addRadialLegend();
 
     // --- Event Handlers ---
     // Use a common class or select for both circles and images for hover/click effects
@@ -1048,30 +1081,13 @@ function initializeRadialView() {
          if (d.data.nodeType === 'root' && !event.currentTarget.classList.contains('category-icon')) return;
         if (tooltip.classList.contains('pinned')) return;
 
-        // Legend highlight - Update to work with category names
-        if (d.data.category || (d.data.nodeType === 'category' && d.data.name)) {
-            const categoryToHighlight = d.data.nodeType === 'category' ? d.data.name : d.data.category;
-             // Normalize category name for comparison if necessary (e.g., Pet_Care vs pet_care)
-             const normalizedCategory = categoryToHighlight.replace(/_/g, ' '); // Simple normalization for legend text
-
-            const legendItems = document.querySelectorAll(`#radial-legend div`);
-            legendItems.forEach(item => {
-                 // Compare normalized text content
-                if (item.textContent.trim().toLowerCase().includes(normalizedCategory.toLowerCase())) {
-                    item.style.background = 'var(--hover-color)'; // Use a themed hover color
-                    item.style.fontWeight = 'bold';
-                     // Optional: Add a subtle border or shadow to the legend item
-                }
-            });
-        }
-
         // Tooltip content generation
         let tooltipContent = `<div style="display:flex;align-items:center;gap:10px;">`;
         // Use iconUrl for category/root/loreal, logo_url for brand for tooltip image
         const tooltipImageUrl = d.data.nodeType === 'brand' ? d.data.logo_url : d.data.iconUrl;
 
         if (tooltipImageUrl) {
-            tooltipContent += `<img src="${tooltipImageUrl}" alt="${d.data.name} logo/icon" style="width:32px;height:32px;border-radius: ${d.data.nodeType === 'category' ? '4px' : '50%'};background:#eee;object-fit:contain; border: 1px solid #ccc;">`;
+            tooltipContent += `<img src="${tooltipImageUrl}" alt="${d.data.name} logo/icon" style="width:38.4px;height:38.4px;border-radius: ${d.data.nodeType === 'category' ? '4.8px' : '50%'};background:#eee;object-fit:contain; border: 1px solid #ccc;">`;
         }
         tooltipContent += `<strong>${d.data.name || 'Unknown'}</strong></div>`; // Ensure name is displayed
 
@@ -1080,9 +1096,10 @@ function initializeRadialView() {
              if (d.data.description) tooltipContent += `<br><p style='font-size:0.9em; color:var(--secondary-text);'>${d.data.description}</p>`;
         } else if (d.data.nodeType === 'loreal_parent') {
              if (d.data.description) tooltipContent += `<br><p style='font-size:0.9em; color:var(--secondary-text);'>${d.data.description}</p>`;
-             const fashionCount = d.children?.find(c => c.data.name === "Fashion")?.children.length || 0;
+             tooltipContent += `<br><span style='color:var(--nestle-blue); font-weight:bold;'>Nestlé owns 20%</span>`;
+             const fashionCount = d.children?.find(c => c.data.name === "Fragrances")?.children.length || 0;
              const cosmeticsCount = d.children?.find(c => c.data.name === "Cosmetics")?.children.length || 0;
-             if (fashionCount > 0) tooltipContent += `<br><span style='color:var(--secondary-text); font-size:0.9em;'>Fashion Brands: ${fashionCount}</span>`;
+             if (fashionCount > 0) tooltipContent += `<br><span style='color:var(--secondary-text); font-size:0.9em;'>Fragrances Brands: ${fashionCount}</span>`;
              if (cosmeticsCount > 0) tooltipContent += `<br><span style='color:var(--secondary-text); font-size:0.9em;'>Cosmetics Brands: ${cosmeticsCount}</span>`;
 
         } else if (d.data.nodeType === 'category') {
@@ -1102,8 +1119,8 @@ function initializeRadialView() {
 
 
         tooltip.innerHTML = tooltipContent;
-        tooltip.style.left = (event.pageX + 10) + 'px';
-        tooltip.style.top = (event.pageY + 10) + 'px';
+        tooltip.style.left = (event.pageX + 12) + 'px';
+        tooltip.style.top = (event.pageY + 12) + 'px';
         tooltip.classList.add('visible');
 
         // Apply hover effect: scale and shadow
@@ -1125,19 +1142,11 @@ function initializeRadialView() {
     .on('mousemove', (event) => {
         if (tooltip.classList.contains('pinned')) return;
         // Update tooltip position
-        tooltip.style.left = (event.pageX + 10) + 'px';
-        tooltip.style.top = (event.pageY + 10) + 'px';
+        tooltip.style.left = (event.pageX + 12) + 'px';
+        tooltip.style.top = (event.pageY + 12) + 'px';
     })
     .on('mouseleave', function(event, d) {
         if (tooltip.classList.contains('pinned')) return;
-
-        // Remove legend highlight
-        const legendItems = document.querySelectorAll(`#radial-legend div`);
-        legendItems.forEach(item => {
-            item.style.background = '';
-            item.style.fontWeight = '';
-            // Optional: Remove added border or shadow from legend item
-        });
         tooltip.classList.remove('visible'); // Hide tooltip if not pinned
 
         // Revert hover effect: scale and shadow
@@ -1152,7 +1161,7 @@ function initializeRadialView() {
                 else if (d.data.nodeType === 'brand') originalRadius = radii.brand;
                  // If it's a category-bg-circle, revert to its specific radius
                  else if (visualElement.classed('category-bg-circle')) originalRadius = radii.category_bg;
-                 else originalRadius = 10; // Fallback for unknown
+                 else originalRadius = 12; // Fallback (was 10)
 
                 visualElement.transition().duration(200).attr('r', originalRadius);
              } else if (visualElement.node().tagName === 'image') { // It's an image
@@ -1180,7 +1189,7 @@ function initializeRadialView() {
                         if (d.data.nodeType === 'loreal_parent') originalRadius = radii.loreal_parent;
                         else if (d.data.nodeType === 'brand') originalRadius = radii.brand;
                          else if (visualElement.classed('category-bg-circle')) originalRadius = radii.category_bg;
-                         else originalRadius = 10;
+                         else originalRadius = 12;
                          visualElement.transition().duration(200).attr('r', originalRadius);
                      } else if (visualElement.node().tagName === 'image') {
                          visualElement.transition().duration(200).attr('transform', null);
@@ -1201,7 +1210,7 @@ function initializeRadialView() {
             const tooltipImageUrl = d.data.nodeType === 'brand' ? d.data.logo_url : d.data.iconUrl;
 
             if (tooltipImageUrl) {
-                tooltipContent += `<img src="${tooltipImageUrl}" alt="${d.data.name} logo/icon" style="width:32px;height:32px;border-radius: ${d.data.nodeType === 'category' ? '4px' : '50%'};background:#eee;object-fit:contain; border: 1px solid #ccc;">`;
+                tooltipContent += `<img src="${tooltipImageUrl}" alt="${d.data.name} logo/icon" style="width:38.4px;height:38.4px;border-radius: ${d.data.nodeType === 'category' ? '4.8px' : '50%'};background:#eee;object-fit:contain; border: 1px solid #ccc;">`;
             }
             tooltipContent += `<strong>${d.data.name || 'Unknown'}</strong></div>`;
 
@@ -1209,9 +1218,10 @@ function initializeRadialView() {
                  if (d.data.description) tooltipContent += `<br><p style='font-size:0.9em; color:var(--secondary-text);'>${d.data.description}</p>`;
             } else if (d.data.nodeType === 'loreal_parent') {
                  if (d.data.description) tooltipContent += `<br><p style='font-size:0.9em; color:var(--secondary-text);'>${d.data.description}</p>`;
-                const fashionCount = d.children?.find(c => c.data.name === "Fashion")?.children.length || 0;
+                 tooltipContent += `<br><span style='color:var(--nestle-blue); font-weight:bold;'>Nestlé owns 20%</span>`;
+                const fashionCount = d.children?.find(c => c.data.name === "Fragrances")?.children.length || 0;
                 const cosmeticsCount = d.children?.find(c => c.data.name === "Cosmetics")?.children.length || 0;
-                if (fashionCount > 0) tooltipContent += `<br><span style='color:var(--secondary-text); font-size:0.9em;'>Fashion Brands: ${fashionCount}</span>`;
+                if (fashionCount > 0) tooltipContent += `<br><span style='color:var(--secondary-text); font-size:0.9em;'>Fragrances Brands: ${fashionCount}</span>`;
                 if (cosmeticsCount > 0) tooltipContent += `<br><span style='color:var(--secondary-text); font-size:0.9em;'>Cosmetics Brands: ${cosmeticsCount}</span>`;
 
             } else if (d.data.nodeType === 'category') {
@@ -1232,8 +1242,8 @@ function initializeRadialView() {
             tooltip.classList.add('visible', 'pinned'); // Make visible and pinned
             // Position tooltip near the clicked element or mouse
             const rect = event.currentTarget.getBoundingClientRect();
-            tooltip.style.left = (rect.left + window.scrollX + (rect.width / 2) + 15) + 'px';
-            tooltip.style.top = (rect.top + window.scrollY + (rect.height / 2) + 15) + 'px';
+            tooltip.style.left = (rect.left + window.scrollX + (rect.width / 2) + 18) + 'px';
+            tooltip.style.top = (rect.top + window.scrollY + (rect.height / 2) + 18) + 'px';
 
         });
 
@@ -1359,123 +1369,64 @@ function updateRadialView(filteredBrands) {
         .map(b => b.name)
         .filter(name => name)); // Ensure names are not null or undefined
 
-     // Determine which nodes (brands, categories, parents) should be visible.
-     // A node should be visible if it's the root, the L'Oréal parent (if it contains visible children),
-     // a category (if it contains visible brands), or a brand that matches the filter.
+    // Determine which nodes should be visible
+    const visibleNodeNames = new Set();
 
-     const visibleNodeNames = new Set();
+    // Always add root node
+    visibleNodeNames.add("Nestlé");
 
-     // Start building the set of visible nodes from the filtered brands
-     filteredBrands.forEach(brand => {
-         if (brand.name) {
-             visibleNodeNames.add(brand.name); // Add the brand name itself
-         }
-     });
-
-
-    // Now, traverse the hierarchy from the root to mark all necessary ancestors as visible
-    // Find the root node data in the current D3 layout data
-    const rootNodeData = radialSvg.select('.root-node').data()[0]?.data; // Get the raw data from the root node
-
-    if (rootNodeData) {
-        function markAncestorsVisible(nodeData) {
-            if (!nodeData || !nodeData.name) return;
-
-            // If this node is in the set of visible brands OR
-            // If any of its children (recursively) are in the set of visible brands,
-            // then this node itself should be visible.
-            let anyDescendantVisible = false;
-            if (nodeData.children) {
-                 // Need to get hierarchy descendants to check recursively
-                 const hierarchyNode = d3.hierarchy(nodeData);
-                 hierarchyNode.descendants().slice(1).forEach(desc => { // Exclude self
-                     if (visibleBrandNames.has(desc.data.name)) {
-                          anyDescendantVisible = true;
-                     }
-                 });
-            }
-
-            if (visibleBrandNames.has(nodeData.name) || anyDescendantVisible) {
-                visibleNodeNames.add(nodeData.name);
-                // Also mark its parent as visible
-                const parentNode = allBrands.find(b => b.name === nodeData.parent_brand);
-                if (parentNode && parentNode.name !== rootNodeData.name) { // Don't need to explicitly mark Nestlé root again
-                     visibleNodeNames.add(parentNode.name);
-                     // Recursively mark ancestors up to the root
-                     markAncestorsVisible(parentNode);
-                } else if (nodeData.nodeType === 'category' || nodeData.nodeType === 'loreal_parent') {
-                    // If it's a category or loreal parent, its parent in the visualization is Nestlé root, which is handled.
-                }
-            }
-        }
-
-        // Rebuild a temporary hierarchy from allBrands to easily traverse parents
-         const tempHierarchy = d3.hierarchy({
-             name: "Nestlé",
-             children: allBrands.map(b => ({...b})) // Create a copy to add hierarchy properties
-         });
-
-         // Map name to the temporary hierarchy node for quick lookup
-         const nameToTempNode = new Map(tempHierarchy.descendants().map(d => [d.data.name, d]));
-
-         // Mark visible brands and their ancestors
-         filteredBrands.forEach(brand => {
-             let currentNodeData = brand;
-             while(currentNodeData && currentNodeData.name !== "Nestlé") {
-                 if (currentNodeData.name) visibleNodeNames.add(currentNodeData.name);
-                 const tempNode = nameToTempNode.get(currentNodeData.name);
-                 currentNodeData = tempNode?.parent?.data; // Move up the hierarchy
-             }
-              if (rootNodeData && rootNodeData.name) visibleNodeNames.add(rootNodeData.name); // Always ensure root is added
-
-         });
-         // Add the L'Oréal node explicitly if it contains any visible descendant
-         const lorealNodeData = allBrands.find(b => b.name === "L'Oréal");
-         if(lorealNodeData) {
-              const lorealHierarchyNode = nameToTempNode.get(lorealNodeData.name);
-               if (lorealHierarchyNode && lorealHierarchyNode.descendants().some(desc => visibleBrandNames.has(desc.data.name))) {
-                  visibleNodeNames.add(lorealNodeData.name);
-               }
-         }
-
-
-        // Add Category and L'Oréal sub-category names if they contain visible brands
-         radialSvg.selectAll('.node').each(function(d) {
-             if (d.data.nodeType === 'category' || d.data.nodeType === 'loreal_parent') {
-                 // Check if this category/parent contains any visible brand descendants in the original filtered list
-                 const containsVisibleBrand = filteredBrands.some(brand => {
-                     let parent = brand;
-                     while(parent) {
-                          if (parent.name === d.data.name) return true;
-                          // Find the parent in the allBrands list to get its parent_brand
-                          const parentBrandData = allBrands.find(b => b.name === parent.parent_brand);
-                          parent = parentBrandData; // Move up using parent_brand link
-                     }
-                     return false; // Brand is not a descendant of this node
-                 });
-
-                 if (containsVisibleBrand) {
-                     visibleNodeNames.add(d.data.name);
-                 }
-             }
-         });
-
-
+    // Add L'Oréal parent if it exists
+    const lorealParent = allBrands.find(b => b.name === "L'Oréal");
+    if (lorealParent) {
+        visibleNodeNames.add(lorealParent.name);
     }
 
+    // Add all category names
+    const categories = Array.from(new Set(allBrands.map(b => b.category).filter(c => c)));
+    categories.forEach(category => visibleNodeNames.add(category));
 
-    // Update node visibility based on the visibleNodeNames set
+    // Add filtered brands and their parents
+    filteredBrands.forEach(brand => {
+        if (brand.name) {
+            visibleNodeNames.add(brand.name);
+            if (brand.parent_brand) {
+                visibleNodeNames.add(brand.parent_brand);
+            }
+            if (brand.category) {
+                visibleNodeNames.add(brand.category);
+            }
+        }
+    });
+
+    // Update node visibility
     radialSvg.selectAll('.node')
         .classed('filtered', d => {
-             // A node is 'filtered' (hidden) if its name is NOT in the visibleNodeNames set
-             // The root node is never fully hidden, only potentially faded by the overall SVG opacity.
-            return d.data.nodeType !== 'root' && !visibleNodeNames.has(d.data.name);
+            // Never filter the root node
+            if (d.data.nodeType === 'root') return false;
+            // Keep category nodes visible
+            if (d.data.nodeType === 'category') return false;
+            // Keep L'Oréal parent visible if it has visible children
+            if (d.data.nodeType === 'loreal_parent') return false;
+            // For brands, check if they're in the filtered set
+            return !visibleNodeNames.has(d.data.name);
         });
 
-    // If no *brands* match the filter, show a message and fade the diagram.
-    // We check filteredBrands.length which is the list of brands matching criteria.
-    const noResultsMsg = document.querySelector('#radial-view .no-results');
+    // Update link visibility
+    radialSvg.selectAll('.link')
+        .style('opacity', d => {
+            const sourceVisible = !d.source.data.nodeType || 
+                                d.source.data.nodeType === 'root' || 
+                                d.source.data.nodeType === 'category' ||
+                                d.source.data.nodeType === 'loreal_parent' ||
+                                visibleNodeNames.has(d.source.data.name);
+            const targetVisible = !d.target.data.nodeType || 
+                                d.target.data.nodeType === 'category' ||
+                                visibleNodeNames.has(d.target.data.name);
+            return (sourceVisible && targetVisible) ? 1 : 0.1;
+        });
 
+    // Show/hide no results message
+    const noResultsMsg = document.querySelector('#radial-view .no-results');
     if (filteredBrands.length === 0) {
         if (!noResultsMsg) {
             const msg = document.createElement('div');
@@ -1484,33 +1435,15 @@ function updateRadialView(filteredBrands) {
                 <h2>No brands found</h2>
                 <p>Try adjusting your search criteria.</p>
             `;
-            const radialViewDiv = document.getElementById('radial-view');
-            if (radialViewDiv) {
-                 radialViewDiv.appendChild(msg);
-            }
+            document.getElementById('radial-view').appendChild(msg);
         }
-
-        // Fade the diagram
         radialSvg.style('opacity', 0.2);
     } else {
-        // Remove any "no results" message
         if (noResultsMsg) {
             noResultsMsg.remove();
         }
-
-        // Show the diagram
         radialSvg.style('opacity', 1);
     }
-
-     // Adjust opacity of links connected to filtered nodes
-    radialSvg.selectAll('.link')
-        .style('opacity', d => {
-            // Check if both source and target nodes are in the set of visible nodes
-             const sourceVisible = visibleNodeNames.has(d.source.data.name);
-             const targetVisible = visibleNodeNames.has(d.target.data.name);
-             return (sourceVisible && targetVisible) ? 1 : 0.1; // Fade out links to filtered nodes
-        });
-
 }
 
 
@@ -1552,14 +1485,14 @@ function addRadialLegend() {
     const colorMap = {
         'Coffee': '#8D6E63', // Brown
         'Sweets': '#EC407A', // Pink
-        'Pet_Care': '#66BB6A', // Green
+        'Pet Care': '#66BB6A', // Green
         'Water': '#29B6F6', // Light Blue
         'Beverages': '#FFA726', // Orange
-        'Cereal': '#9C27B0', // Purple
-        'Icecream': '#FFCDD2', // Light Pink
+        'Cereals': '#9C27B0', // Purple
+        'Ice Cream': '#FFCDD2', // Light Pink
         'Cosmetics': '#FF8A65', // Light Orange
-        'Fashion': '#BA68C8' // Different purple
-        // Add colors for other categories if needed
+        'Fragrances': '#BA68C8', // Purple for Fragrances
+        'Skincare': '#4DD0E1' // Teal for Skincare
     };
 
     const legend = d3.select('#radial-legend');
