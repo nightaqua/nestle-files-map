@@ -2,7 +2,7 @@
 :root {
     /* Light Theme (default) */
     --background: #f4f4f4;
-    --card-bg: #ffffff;
+    --card-bg: #000000;
     --text-color: #333333;
     --secondary-text: #666666;
     --border-color: #dddddd;
@@ -12,13 +12,13 @@
     --nestle-dark-blue: #005080;
     --nestle-red: #E2001A;
     --hover-color: #f0f0f0;
-    --loading-bg: #ffffff;
+    --loading-bg: #000000;
 }
 
 /* Dark Theme */
 html[data-theme='dark'] {
     --background: #1a1a1a;
-    --card-bg: #2a2a2a;
+    --card-bg: #000000;
     --text-color: #ffffff;
     --secondary-text: #bbbbbb;
     --border-color: #444444;
@@ -28,7 +28,7 @@ html[data-theme='dark'] {
     --nestle-dark-blue: #0073B2;
     --nestle-red: #ff3b4e;
     --hover-color: #383838;
-    --loading-bg: #1a1a1a;
+    --loading-bg: #000000;
 }
 
 /* Global Styles */
